@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 /**
- * 1. CartItem ინტერფეისი
+ *  CartItem ინტერფეისი
  */
 interface CartItem {
   id: number; 
@@ -10,7 +10,7 @@ interface CartItem {
 }
 
 /**
- * 2. საწყისი მდგომარეობა (Initial State)
+ *  საწყისი მდგომარეობა (Initial State)
  */
 interface CartState {
   items: CartItem[];
@@ -24,7 +24,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     /**
-     * 3. addToCart: ამატებს ნივთს კალათაში.
+     *  addToCart: ამატებს ნივთს კალათაში.
      */
     addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {
       const existing = state.items.find((i) => i.id === action.payload.id);
@@ -36,7 +36,7 @@ const cartSlice = createSlice({
     },
 
     /**
-     * 4. updateQuantity: რაოდენობის შეცვლა (+1 ან -1).
+     *  updateQuantity: რაოდენობის შეცვლა (+1 ან -1).
      */
     updateQuantity: (state, action: PayloadAction<{ id: number; amount: number }>) => {
       const { id, amount } = action.payload;
@@ -47,7 +47,7 @@ const cartSlice = createSlice({
     },
 
     /**
-     * 5. moveToTrash: ნივთის გადატანა კალათიდან ურნაში.
+     *  moveToTrash: ნივთის გადატანა კალათიდან ურნაში.
      */
     moveToTrash: (state, action: PayloadAction<number>) => {
       const item = state.items.find((i) => i.id === action.payload);
@@ -58,7 +58,7 @@ const cartSlice = createSlice({
     },
 
     /**
-     * 6. restoreFromTrash: "Undo" ფუნქცია.
+     *  restoreFromTrash: "Undo" ფუნქცია.
      */
     restoreFromTrash: (state, action: PayloadAction<number>) => {
       const item = state.deletedItems.find((i) => i.id === action.payload);
@@ -69,14 +69,14 @@ const cartSlice = createSlice({
     },
 
     /**
-     * 7. emptyTrash: მხოლოდ ურნის (წაშლილი ნივთების) გასუფთავება.
+     *  emptyTrash: მხოლოდ ურნის (წაშლილი ნივთების) გასუფთავება.
      */
     emptyTrash: (state) => { 
       state.deletedItems = []; 
     },
 
     /**
-     * 8. clearCart: კალათის სრული დაცლა.
+     *  clearCart: კალათის სრული დაცლა.
      * გამოიყენება Checkout-ის წარმატებით დასრულების შემდეგ.
      * შლის როგორც აქტიურ ნივთებს, ისე ურნას.
      */
