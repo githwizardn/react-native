@@ -1,10 +1,10 @@
-# 📱 SmartStore — Production-Grade Cross-Platform E-Commerce
+#  SmartStore — Production-Grade Cross-Platform E-Commerce
 
 **SmartStore** is a high-performance, scalable mobile shopping application built with **React Native** and the **Expo** ecosystem. This project serves as a **portfolio artifact**, demonstrating sophisticated mobile frontend patterns, centralized state management, and resilient architectural decision-making.
 
 ---
 
-## 🏗️ Engineering Goals
+##  Engineering Goals
 
 Developing for mobile requires a focus on performance, persistence, and deterministic state. This project prioritizes:
 
@@ -15,7 +15,7 @@ Developing for mobile requires a focus on performance, persistence, and determin
 
 ---
 
-## 🛠️ Architecture & Navigation
+##  Architecture & Navigation
 
 ### Hybrid Navigation Strategy
 
@@ -27,7 +27,7 @@ The application utilizes a nested navigation architecture to balance ease of use
 
 ---
 
-## 🧠 State Management Design
+##  State Management Design
 
 ### Redux Toolkit (RTK) Integration
 
@@ -39,7 +39,7 @@ Global state is managed via a centralized Redux store, ensuring a **Single Sourc
 
 ---
 
-## 🔐 Forms, Validation & Security
+##  Forms, Validation & Security
 
 ### Schema-Driven Validation
 
@@ -54,7 +54,7 @@ Integrated **React Hook Form** with **Yup** to decouple validation rules from UI
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```bash
 app/
@@ -80,7 +80,7 @@ hooks/                    # Custom React hooks
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 1. **Install dependencies**
 ```bash
@@ -101,7 +101,7 @@ In the output, you'll find options to open the app in a **development build**, *
 
 ---
 
-## 📈 Why This Project Matters
+##  Why This Project Matters
 
 SmartStore represents a shift from "basic app development" to **Mobile Systems Engineering**. It showcases:
 
