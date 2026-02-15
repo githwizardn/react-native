@@ -1,50 +1,118 @@
-# Welcome to your Expo app 👋
+# 📱 SmartStore — Production-Grade Cross-Platform E-Commerce
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**SmartStore** is a high-performance, scalable mobile shopping application built with **React Native** and the **Expo** ecosystem. This project serves as a **portfolio artifact**, demonstrating sophisticated mobile frontend patterns, centralized state management, and resilient architectural decision-making.
 
-## Get started
+---
 
-1. Install dependencies
+## 🏗️ Engineering Goals
 
-   ```bash
-   npm install
-   ```
+Developing for mobile requires a focus on performance, persistence, and deterministic state. This project prioritizes:
 
-2. Start the app
+* **Type Safety:** Full **TypeScript** implementation to ensure data integrity across API responses and global state.
+* **State Persistence:** Integration of **AsyncStorage** to maintain user sessions and cart data across app lifecycles.
+* **Modern Routing:** Utilizing **Expo Router** for deep-linkable, file-based routing across Android and iOS.
+* **Resilient UI:** Strategic handling of asynchronous data to prevent UI flickering and "null" crashes during API latency.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🛠️ Architecture & Navigation
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Hybrid Navigation Strategy
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+The application utilizes a nested navigation architecture to balance ease of use with security:
 
-## Get a fresh project
+* **(tabs) Layout:** The primary application context housing the Product Catalog, Shopping Cart, and User Wishlist.
+* **Dynamic Stack Routing:** Implements `app/product/[id].tsx` to handle high-volume product rendering through a single, optimized template.
+* **Auth Flow:** Dedicated routes for `login.tsx` and `register.tsx` to manage secure user access and onboarding.
 
-When you're ready, run:
+---
+
+## 🧠 State Management Design
+
+### Redux Toolkit (RTK) Integration
+
+Global state is managed via a centralized Redux store, ensuring a **Single Source of Truth**:
+
+* **Cart Logic:** Specialized `cartSlice.ts` managing item addition, quantity updates, and state persistence.
+* **Wishlist Management:** `wishlistSlice.ts` handling favorites toggling and dynamic UI badge updates.
+* **Memoized Selectors:** Optimized logic to calculate totals and counts, preventing unnecessary re-renders in complex UI trees.
+
+---
+
+## 🔐 Forms, Validation & Security
+
+### Schema-Driven Validation
+
+Integrated **React Hook Form** with **Yup** to decouple validation rules from UI components:
+
+* **Strict Security Policy:** Enforces high-entropy passwords via **Regular Expressions (Regex)**:
+* Minimum 8 characters.
+* Mandatory Uppercase, Lowercase, Number, and Special Character (`@$!%*?&`).
+
+
+* **Data Integrity:** Implements cross-field validation for "Confirm Password" fields using `yup.ref()`.
+
+---
+
+## 📂 Project Structure
 
 ```bash
-npm run reset-project
+app/
+├── (tabs)/               # Core Tab-based navigation
+│   ├── _layout.tsx       # Tab bar configuration
+│   ├── cart.tsx          # Cart engine & logic
+│   ├── favorites.tsx     # Wishlist management
+│   ├── index.tsx         # Product Catalog (Home)
+│   └── profile.tsx       # User settings & profile
+├── product/              # Nested Dynamic Stack
+│   └── [id].tsx          # Dynamic product detail renderer
+├── login.tsx             # Authentication entry
+└── register.tsx          # Secure signup form
+store/                    # Centralized Redux Store
+├── cartSlice.ts          # Cart reducers
+├── store.ts              # Root store configuration
+└── wishlistSlice.ts      # Wishlist logic
+components/               # Reusable UI components
+constants/                # Theme colors and static data
+hooks/                    # Custom React hooks
+
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🚀 Getting Started
 
-To learn more about developing your project with Expo, look at the following resources:
+1. **Install dependencies**
+```bash
+npm install
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
 
-## Join the community
 
-Join our community of developers creating universal apps.
+2. **Start the app**
+```bash
+npx expo start
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+
+
+
+In the output, you'll find options to open the app in a **development build**, **Android emulator**, **iOS simulator**, or **Expo Go**. Scan the QR code with your physical device to see the app in action.
+
+---
+
+## 📈 Why This Project Matters
+
+SmartStore represents a shift from "basic app development" to **Mobile Systems Engineering**. It showcases:
+
+1. **Scalable State Persistence:** Managing complex data transitions across app restarts.
+2. **Production-Ready Validation:** Protecting user data through rigorous schema enforcement.
+3. **Optimized UX:** Supporting Native functionality and providing instant tactile feedback.
+
+---
+
+**Author:** Nodo
+
+**Purpose:** Portfolio Project
+
+**Status:** Final Release — 2026
