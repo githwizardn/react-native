@@ -122,11 +122,23 @@ export default function CartPage() {
 
           {/* რაოდენობის მართვა (+/-) */}
           <View style={styles.qtyBox}>
-            <TouchableOpacity onPress={() => dispatch(updateQuantity({id: item.id, amount: -1}))}>
+            {/* Minus Button: Disabled when quantity is 1 */}
+            <TouchableOpacity 
+              onPress={() => dispatch(updateQuantity({id: item.id, amount: -1}))}
+              disabled={item.quantity <= 1}
+              style={{ opacity: item.quantity <= 1 ? 0.3 : 1 }}
+            >
               <Ionicons name="remove" size={20} color="black" />
             </TouchableOpacity>
+
             <Text style={styles.qtyText}>{item.quantity}</Text>
-            <TouchableOpacity onPress={() => dispatch(updateQuantity({id: item.id, amount: 1}))}>
+
+            {/* Plus Button: Disabled when quantity is 10 */}
+            <TouchableOpacity 
+              onPress={() => dispatch(updateQuantity({id: item.id, amount: 1}))}
+              disabled={item.quantity >= 10}
+              style={{ opacity: item.quantity >= 10 ? 0.3 : 1 }}
+            >
               <Ionicons name="add" size={20} color="black" />
             </TouchableOpacity>
           </View>
