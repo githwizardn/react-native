@@ -25,7 +25,16 @@ const initialState: CartState = { items: [], deletedItems: [] };
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
+  reducers:
+   {
+    setCart: (state, action: PayloadAction<CartState>) => {
+      state.items = action.payload.items || [];
+      state.deletedItems = action.payload.deletedItems || [];
+    },
+
+
+
+
     /**
      * addToCart: Adds a new item or increments an existing one.
      * Logic: If the item exists, it checks if the quantity is under 10 before incrementing.
@@ -106,6 +115,7 @@ const cartSlice = createSlice({
 });
 
 export const { 
+  setCart,
   addToCart, 
   updateQuantity, 
   moveToTrash, 

@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
 //  Redux მოქმედებები: საჭიროა კალათის მართვისთვის
-import { updateQuantity, clearCart, moveToTrash, restoreFromTrash, emptyTrash } from '../../store/cartSlice';
+import { updateQuantity, clearCart, moveToTrash, restoreFromTrash, emptyTrash, setCart } from '../../store/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,6 +27,34 @@ export default function CartPage() {
   
   //  ჯამური ღირებულების გამოთვლა (ფასი გამრავლებული რაოდენობაზე)
   const total = items.reduce((acc: number, i: CartItem) => acc + i.price * i.quantity, 0);
+
+    // როცა გვერდი ჩაიტვირთება, წამოვიღოთ შენახული კალათა
+  useEffect(() => {
+    const loadCartData = async () => {
+      try {
+        const savedCart = await AsyncStorage.getItem('cart_data');
+        if (savedCart) {
+          dispatch(setCart(JSON.parse(savedCart)));
+        }
+      } catch (error) {
+        console.error("Failed to load cart data", error);
+      }
+    };
+    loadCartData();
+  }, [dispatch]);
+
+  //  როცა კალათაში რამე შეიცვლება, მაშინვე შევინახოთ AsyncStorage-ში
+  useEffect(() => {
+    const saveCartData = async () => {
+      try {
+        await AsyncStorage.setItem('cart_data', JSON.stringify({ items, deletedItems }));
+      } catch (error) {
+        console.error("Failed to save cart data", error);
+      }
+    };
+    saveCartData();
+  }, [items, deletedItems]);
+
 
   /**
    *  Checkout ფუნქცია
