@@ -80,7 +80,7 @@ export default function ProfilePage() {
     <View style={styles.center}><ActivityIndicator size="large" color="#2563eb" /></View>
   );
 
-  // --- თუ მომხმარებელი არ არის შესული (GUEST VIEW) ---
+  // --- თუ მომხმარებელი არ არის შესული ---
   if (!isLoggedIn) {
     return (
       <View style={styles.center}>
