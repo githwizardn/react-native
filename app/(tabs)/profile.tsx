@@ -2,23 +2,23 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ActivityIndicat
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker'; // 
+import * as ImagePicker from 'expo-image-picker';  
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfilePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [image, setImage] = useState<string | null>(null); // State პროფილის სურათისთვის
+  const [image, setImage] = useState<string | null>(null);  
   const router = useRouter();
 
-  // აპლიკაციის ჩატვირთვისას ვამოწმებთ ავტორიზაციას და ვტვირთავთ სურათს
+  // აპლიკაციის ჩატვირთვისას ერთდროულად ვამოწმებთ ავტორიზაციას და ვტვირთავთ შენახულ სურათს
   useEffect(() => {
     checkAuth();
     loadProfileImage();
   }, []);
 
   /**
-   * ავტორიზაციის შემოწმება AsyncStorage-დან
+   *  ავტორიზაციის შემოწმება AsyncStorage-დან
    */
   const checkAuth = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -27,13 +27,16 @@ export default function ProfilePage() {
   };
 
   /**
-   * სურათის წამოღება AsyncStorage-დან 
+   *  შენახული სურათის წამოღება AsyncStorage-დან (Persistence)
    */
   const loadProfileImage = async () => {
     const savedImage = await AsyncStorage.getItem("user_profile_image");
     if (savedImage) setImage(savedImage);
   };
 
+  /**
+   *  Image Picker & Permissions ლოგიკა
+   */
   const pickImage = async () => {
     //  ვითხოვთ გალერეაზე წვდომის უფლებას (Permissions)
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -46,11 +49,11 @@ export default function ProfilePage() {
       return;
     }
 
-    //  ვხსნით გალერეას
+    //  ვხსნით გალერეას სურათის ასარჩევად
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true, // სურათის მოჭრის ფუნქცია
-      aspect: [1, 1],
+      allowsEditing: true, // სურათის მოჭრის შესაძლებლობა
+      aspect: [1, 1], // კვადრატული ფორმატი
       quality: 0.5,
     });
 
@@ -58,13 +61,13 @@ export default function ProfilePage() {
       const selectedUri = result.assets[0].uri;
       setImage(selectedUri);
       
-      //  შენახვა AsyncStorage-ში, რომ აპლიკაციის რესტარტისას არ წაიშალოს
+      //  შენახვა AsyncStorage-ში, რომ აპლიკაციის დახურვისას არ წაიშალოს
       await AsyncStorage.setItem("user_profile_image", selectedUri);
     }
   };
 
   /**
-   * გამოსვლის ფუნქცია
+   *  Logout ფუნქცია - შლის ტოკენს და გადაჰყავს მომხმარებელი მთავარზე
    */
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
@@ -72,12 +75,12 @@ export default function ProfilePage() {
     router.replace('/');
   };
 
-  // Loading State - ეკრანის ჩატვირთვისას
+  // ჩატვირთვის ინდიკატორი
   if (loading) return (
     <View style={styles.center}><ActivityIndicator size="large" color="#2563eb" /></View>
   );
 
-  // --- თუ მომხმარებელი არ არის ავტორიზებული ---
+  // --- თუ მომხმარებელი არ არის შესული (GUEST VIEW) ---
   if (!isLoggedIn) {
     return (
       <View style={styles.center}>
@@ -92,10 +95,11 @@ export default function ProfilePage() {
     );
   }
 
+  // --- პროფილის გვერდი ავტორიზებული მომხმარებლისთვის ---
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        {/* სურათის შეცვლის ღილაკი */}
+        {/* სურათზე დაჭერით იხსნება pickImage ფუნქცია */}
         <TouchableOpacity onPress={pickImage} style={styles.avatarWrapper}>
           {image ? (
             <Image source={{ uri: image }} style={styles.avatar} />
@@ -104,24 +108,28 @@ export default function ProfilePage() {
               <Ionicons name="camera" size={40} color="#cbd5e1" />
             </View>
           )}
-          {/* პატარა "Edit" აიქონი */}
           <View style={styles.editBadge}>
             <Ionicons name="pencil" size={14} color="white" />
           </View>
         </TouchableOpacity>
 
         <Text style={styles.name}>Welcome Back!</Text>
-        <Text style={styles.email}>user@example.com</Text>
+        <Text style={styles.email}>john@gmail.com</Text>
       </View>
 
       <View style={styles.menu}>
-        {/* მენიუს პუნქტი: კალათა */}
+        <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/favorites')}>
+          <Ionicons name="heart-outline" size={20} color="#475569" />
+          <Text style={styles.menuText}>My Favorites</Text>
+        </TouchableOpacity>
+
+        {/*  My Cart */}
         <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/cart')}>
           <Ionicons name="cart-outline" size={20} color="#475569" />
           <Text style={styles.menuText}>My Cart</Text>
         </TouchableOpacity>
         
-        {/* მენიუს პუნქტი: გამოსვლა */}
+        {/*  Logout */}
         <TouchableOpacity 
           style={[styles.menuItem, { borderBottomWidth: 0 }]} 
           onPress={handleLogout}
@@ -131,10 +139,7 @@ export default function ProfilePage() {
         </TouchableOpacity>
       </View>
 
-      {/* დამატებითი ინფორმაცია დავალების შესახებ */}
-      <View style={styles.footerNote}>
-        <Text style={styles.noteText}>Permissions & AsyncStorage implemented.</Text>
-      </View>
+      
     </View>
   );
 }
