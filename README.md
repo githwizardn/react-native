@@ -1,6 +1,6 @@
-#  SmartStore — Production-Grade Cross-Platform E-Commerce
+ Cross-Platform E-Commerce
 
-**SmartStore** is a high-performance, scalable mobile shopping application built with **React Native** and the **Expo** ecosystem. This project serves as a **portfolio artifact**, demonstrating sophisticated mobile frontend patterns, centralized state management, and resilient architectural decision-making.
+this is a high-performance, scalable mobile shopping application built with **React Native** and the **Expo** ecosystem. This project serves as a **portfolio artifact**, demonstrating sophisticated mobile frontend patterns, centralized state management, and resilient architectural decision-making.
 
 ---
 
